@@ -1,0 +1,3 @@
+Securing rpcbind only affects NFSv2 and NFSv3 implementations, since NFSv4 no longer requires it
+NFS port number 2049
+Listens on port 111
