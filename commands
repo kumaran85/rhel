@@ -1,0 +1,338 @@
+######################
+CVSS Commoon Vulnerability scoring system. CVE common Vulnerabilites and Exposure.
+CVE-2017-1000253 
+CVE-2015-5600  ChallengeResponeAuthentocation no in sshd
+#########################
+#############    
+1.delete rules in iptables
+iptables -t nat -L -n -line-number
+iptables -t nat -D prerouting (number)
+iptables -t nat -D postrouting (number)
+iptables -t nat -A INPUT   -p tcp --dport  443 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080 
+iptables -t nat -A POSTROUTING -j MASQUERADE
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 993 -j DNAT -d 10.65.15.210 --to-destination email.o365.philips.com:993
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 993 -j DNAT -d 10.65.15.210 --to-destination email.o365.philips.com
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 993 -j DNAT -d 10.65.15.210 --to-destination 40.103.22.134:993
+iptables -t nat -A PREROUTING -p tcp --dport 8222 -d 54.76.233.75 -j DNAT --to-destination 54.76.233.75:8222
+firewall-cmd --direct --add-rule ipv4 filter INPUT_direct 1 -p tcp --dport 1270 -j ACCEPT
+
+#######################
+2.lsof  |grep deleted to release space. Then kill those process or restart application service.
+#####################
+3.subscription-mananger list -> shows when support starts and ENDS
+4.subscription-manager version  -> shows Redhat registerd or not
+5.subscription-manager status 
+6.subscription-manager repos -> what repos entitled to this system.
+#######################
+7. make /var as separate 
+ cp /var and create /var then move data to /var.  Now create /var/log.
+######################
+8. root crontab error(you are not allowed to access to (crontab) because of pam configuration)
+root password expired set it
+#####################
+8. SSH based authentication
+ PasswordAuthentication yes /etc/ssh/sshd_config 
+AllowUsers linux
+AllowGroups squid
+#####################
+9. squid server:
+   acl whitelist dstdomain "/etc/squid/whitelist"
+   http_access allow whitelist
+3.5.20 version squid remove . from whitelist
+##################
+10. if you set 600 for /etc/passwd and /etc/group ,while logging error will occur
+#################
+11.sftp server nothing but normal SSH only. same 22 port using 
+configure sftp server
+Subsystem sftp internal-sftp
+ChrootDirectory /home or /sftp/%u so create both dir /sftp/user/home 	
+Match Group sftp_users
+#ForceCommand internal-sftp will  restrict do ssh to normal users
+#############
+12.Grep command examples 
+grep -e sync -e shutdown -e halt /etc/passwd or grep -E 'sync|shutdown' /etc/passwd
+grep -n halt /etc/passwd shows line number in the file
+grep -l keppalive /etc/httpd/conf.d/ -R  matching which are the file having those keepalive parameter
+grep -c nologin /etc/passwd number of nolgin in that file.
+##############
+13.IPtables rules
+iptables -t nat -A PREROUTING -p udp --dport 25 -s 10.65.8.209 -d 10.65.10.4 -j DNAT --to-destination 159.122.224.196:25
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j  REDIRECT --to-port 8080
+###############
+14.umask value 
+Default root 022 after changing source /etc/profile then it will come to live.
+############
+15. ppk key conversion from id_rsa
+  Use puttygen. Copy entire key id_rsa to notepad and save as filename. then Use load key from puttygen, key imported and save private key.
+#####################
+15. Increase pty sesion 
+cat /proc/sys/kernel/pty/max 
+##############
+16.Firewalld connection
+ ls /usr/lib/firewalld/services and ls /usr/lib/firewalld/zones/*     
+ #############
+17. Create ssh-keygen -t rsa for user. Copy user private key to authorized_keys. Convert private key as ppk to login from windows.
+Or copy private key to any linux user .ssh dir. try to do ssh without password.
+########
+18. Password algorithm to sha512
+authconfig --passalgo=sha512 --update ( which updats /etc/login.defs /etc/sysconfig/authconfig /etc/libuser.conf /etc/pam.d/system-auth
+password sufficient pam_unix.so md5 remember=6 shadow nullok try_first_pass use_authtok /etc/pam.d/system-auth and /etc/pam.d/password-auth
+password    requisite    pam_cracklib.so  try_first_pass retry=3 dcredit=0 ucredit=0 ocredit=0 lcredit=0 minlen=12 same as baove two file
+############
+19.error: "net.bridge.bridge-nf-call-iptables" is an unknown key
+ update module-init pacakge and initscripts 
+#####################
+20.chage -d 0 name sets the date as password was last changed on jan 1 1970. So user forcefully to change password.
+
+######################
+21.sosreport system logs hardware status sending to Red hat request.
+dropwatch command to check packets dropped by kernel.
+########################
+22. s/key one time challenge-response authentication method.
+PAM sends and checks challenge-response method...
+ChallengeResponseAuthentication defines keyboard-interactive authentication scheme.
+######################
+23. ServerAliveInterval sshd for all users. to limite users .ssh/config edit and add 
+ Host *
+   ClientAliveInterval 60 for ssh connection timeout 
+#####################
+24. Delete empty or blank lines
+  sed -i '/^$/d' file deletes blank lines.
+  sed -i '2d' file second lines.
+  sed -i '3!d' file except 3d line
+  sed -i '2,4!d' file except 2-4 remove all lines.
+  sed -i 's/^/#/' /etc/sysctl.conf -> add # to each line
+  sed -i '/^search/ a nameserver 8.8.8.8' /etc/resolv.conf Append lines with pattern matching.
+  sed -i '4 i This is the Line' /etc/resolv.conf ->Adds in 4th line.
+
+########################
+25. Disable samba null session in smb.conf "map to guest" set as never and "nt pipe support" no
+#############
+26: Check which domain added to Linux 
+   realm list 
+   realm grant user@domain.com
+##################
+27. RHEL 6 password policy
+  password    requisite     pam_cracklib.so try_first_pass retry=3 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=0 minlen=8
+  password    sufficient    pam_unix.so md5 remember=5 shadow nullok try_first_pass use_authtok 
+  auth         required     pam_tally2.so onerr=fail no_magic_root deny=3 
+  account     required      pam_tally2.so 
+
+touch /etc/security/opasswd chmod 600 /etc/security/opasswd to remember 5 password
+########################
+28 udevadm trigger after changing udev rules no need to reboot 
+   udevadm control --reload
+########################
+29.dhclient -v view DHCP sever IP as dhcpoffer
+#######################
+30. audit log for any file change
+  auditctl -w /etc/passwd -p wa -k passwd_change.  p permission w-write a-attribute change.
+#######################
+31. fstab entries 0 0 
+ First 0 dump and second one pass . First one will never be backed up.
+ pass 0 don't check fsck on boot 1 for root FS and 2 for other FS.
+ defaults mean suid,exec,rw,auto,relatime,async,
+########################
+32. umask value is 0022 first digit special permission second user and third group last one is others
+000  DO NOT gate this then do AND this to ouptut with 777 for dir and 666 for files.
+002
+022 
+027
+077
+277
+###########################
+33. /etc/passwd contains 7 params
+chage -E "2017-05-25" linux
+chage -I 10 linux 
+useradd -u -f 10 -e 2018-05-27 -s /bin/bash linux 
+##############################
+34. echo " - - -" > /sys/class/scsci_host/host0/scan
+
+cloud apache not starting because og proxypass length hostname.
+#################################
+35.lost+found contains corrupted files during shutdown or H/W failure.
+   superblock contains FS characteristics bblock size, metadata info inode tabled info. if any fails on superblock we cant mount it.
+ dump2fs /dev/sdb1   |grep superblock
+  
+fsck -6 3268 /dev/sdb1
+rpm -q --changelog samba | less
+
+gcc-c++ to compile tar should install.
+#############################################
+export https_proxy=http://10.65.10.4:8080
+yum.conf proxy=http://ip:8080
+#################################################
+Set the https_proxy environment variable using the command specific to your shell. For example, in bash, use the export command.
+Example:
+$ export https_proxy=http://my.proxyserver.com:8080
+Using authentication:
+export HTTP_PROXY=http://username:password@a.b.c.d:n
+$ export HTTPS_PROXY=http://username:password@w.x.y.z:m
+#####################################################
+
+lsof -i tcp:22; lsof -c init; lsof -i ec2-user -c ssh; lsof -u ^root #except root.
+lsof +D /home and lsof /var/log/messages #which are the process running on that file.
+lsof -p 2345 
+################################################
+edit/etc/default/grub grub_cmd_linux audit=1 to audit before audit process starts.
+
+####################################
+sed '3 c\ Insert this part' file.txt -> Replace 3rd line
+sed '3 a\insert this' file.txt inserts after 3rd line as 4th line but not saving
+sed '3 i\inserts this' file.txt ->adds before 3rd line So It will be 3rd line.
+sed -n '#=' file -> no of lines.
+################################
+nfs port number 2049 enable SG on aws to mount nfs.
+
+###############################
+tar cvzf file.tar.gz file.
+gzip filename
+gunzip filenam.gz
+
+######################################
+Disable ICMP. set 1
+/proc/sys/net/ipv4/icmp_echo_ignore_all
+######################################
+
+Soft Link	                 Hard link
+Different Inode numbers	         Same inode number
+Source Deletes loose data	Data is available.
+Across Directories. Across FS.	Only to file. So within same FS.
+
+#############################################################	
+ausearch to view audit.log
+
+#######################################
+cp initrams to /tmp
+then make as .gz
+extract gunzip
+then create one dir and cd into that.
+cpio -id < initramfs....img
+
+current runlevel read from /var/run/utmp or who -r
+
+strings /sbib/telinit
+
+update-rc.d set start and stop order and runlevels
+
+systemd-analyze blame to tune performance and when service started.
+
+systemctl enable sshd.
+
+/lib/systemd/system
+
+/etc/systemd/system
+
+systemctl mask ntpd like disable.
+
+systemctl show sshd
+
+systemctl list-units and systemd list-unit-files.
+
+hostnamectl and timedatectl loginctl show-user ec2-user.
+
+grub2-script-check -v /etc/grub.d/40_custom
+
+#################################################
+systemctl unmask tmp.mount
+systemctl enable tmp.mount
+systemctl list-units 
+systemctl rescue
+#####################################
+openssl pkcs12 -export -out egrc.pfx -inkey /etc/pki/tls/private/acc.egrc.philips.com-key.pem  -in /etc/pki/tls/certs/acc.egrc.philips.com-cert.pem
+####################################
+Delete files more than 1 days
+find /var/log/httpd -size +1G -mtime +1 -exec rm -rf  {}  \;  only keep one day file delete others.
+#################################
+
+apt-get -y install sssd realmd krb5-user samba-common  to add debian and ubuntu servers
+
+#############################
+chronyc sources -v 
+
+#########
+awk -F: '( $3 == 0 ) {print $1}' /etc/passwd
+w|awk '{if  (NR==3) print $1}'
+
+######
+
+authconfig --passalgo=sha512 --update
+
+##################
+
+grub2-md5-crypt   /etc/grub/grub.conf
+
+package-cleanup --dupes ->Shows all installed duplicate packages.
+package-cleanup --cleandupes
+rpm -q --qf="%{NAME}.%{BUILDTIME} %{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" $(package-cleanup --dupes -q) | sort | awk 'NR%2 != 0 { print $2 }'
+Just update dependeny pacakge then uninstall.
+
+###################################
+perl -pe 's/\d+/localtime($&)/e' access.log 
+
+###############################
+Disable Password Authentication
+usermod -p! username.
+############################
+
+usermod -l new oldname
+usermod  -m -d /new/path username.
+
+############################
+tar -cvzf /tmp/maillog.tar maillog.
+
+find /var/log -type f -exec chmod g-wx,o-rwx {} +
+
+###########################
+auth        required       pam_faillock.so preauth silent audit deny=3 unlock_time=600
+auth        sufficient     pam_unix.so nullok try_first_pass
+auth        [default=die]  pam_faillock.so authfail audit deny=3 unlock_time=600
+
+account     required      pam_faillock.so
+
+#############################
+chsh --list-shells
+
+
+wget http://localhost:8060/crucible
+
+X-Forwarded-Port to identify which port client using to connecto to ELB.
+X-forwaded-Proto  same as above protocol.
+###############################
+chage -d0 name -> Forcing user to change password.
+#####################
+touch /.autorelabel or restorecon -Rv
+############################
+
+https://github.com/stelligent/opendelivery_platform/blob/master/cloudformation/cross.account.bucket.policy.template 
+###################
+export HISTTIMEFORMAT='%F %T'
+###############
+awk -F: '{ if ($3 == 0) print $1}' /etc/passwd
+w|awk '{ if(NR==3) print $1}' From 3rd Line It prints. 
+awk '{print NR,$0}' /etc/passwd. Print lines by number.
+###########################
+realm join fail with error "Couldn't connect to realm service: Error calling StartServiceByName for org.freedesktop.realmd: Timeout was reached
+Then start dbus and realmd service.
+##############################
+KeepAliveTimeout  2400   (milli seconds)
+High value causes performance issues.
+##############################
+pvdisplay -C --separator '  |  ' -o pv_name,vg_name
+
+env http_proxy=http://10.65.10.4:8080
+env https_proxy=http://10.65.10.4:8080
+env HTTP_PROXY=http://10.65.10.4:8080
+env HTTPS_PROXY=http://10.65.10.4:8080
+env no_proxy=169.254.169.254
+################
+hidepid=2 process files invisible to non-root users.
+hidepid=1 users can access their own process dir.
+
+#################
+ulimit -a -H  # For hard limit
+ulimit -a -S  # For soft Limit
+
+#########
+aws sts get-caller-identity -> To check which IAM role attached.
