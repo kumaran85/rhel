@@ -1,0 +1,5 @@
+https://blacksaildivision.com/how-to-install-apache-httpd-on-centos
+
+Install apache lastet version using source file.
+Enable balancer feature in apache which has few dependency. Don't do in Prod. 
+mod_watchdog.so mod_slotmem_shm.so
