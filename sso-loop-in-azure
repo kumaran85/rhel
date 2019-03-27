@@ -1,0 +1,23 @@
+#To eneble memcache, activate below modules. When azure ARP hosted between 2 ARP server and LB and application also hosted behind LB.
+#Then cookie session not persistent. Then enable below it.
+in Apache version 2.4.6
+
+LoadModule socache_memcache_module modules/mod_socache_memcache.so
+Loadmodule cache_module modules/mod_cache.so
+Loadmodule cache_socache_module modules/mod_cache_socache.so
+LoadModule cache_disk_module modules/mod_cache_disk.so
+
+#Add below into V-hosts file for each application 
+Enable memcache
+CacheEnable socache /
+CacheSocache memcache
+CacheSocacheMaxSize 10240
+CacheSocache memcache:10.64.146.7:11211,memcache:10.64.146.8:11211
+
+<IfModule mod_cache_disk.c>
+      CacheRoot "/logfiledir"
+      CacheEnable disk  "/"
+      CacheDirLevels 5
+      CacheDirLength 3
+ </IfModule>
+  
