@@ -1,0 +1,10 @@
+Creating native SSH SFTP
+# Below is SSHD Config 
+#sftp server
+Match Group sftpusers
+ChrootDirectory /sftp/%u
+#ForceCommand internal-sftp
+
+#Then create dir /sftp/user/home
+chmod 755 /sftp/username/ -R 
+chown user:sftpusers /sftp/username/home -R 
