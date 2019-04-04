@@ -1,0 +1,10 @@
+Redirecting into file using script.
+User data is script based so just add to make localhost playbook
+#!/bin/bash
+cat > localhost.yml <<EOF
+---
+- hosts: localhost
+  connection: local
+  roles:
+   - RHEL7-CIS
+EOF
