@@ -1,0 +1,7 @@
+Create file in /etc/NetworkManager/conf.d/disable-resolve.conf-managing.conf
+Then add as below
+[main]
+dns=none
+After rebooting add DNS servers manually 
+
+https://aws.amazon.com/premiumsupport/knowledge-center/ec2-static-dns-ubuntu-debian/
