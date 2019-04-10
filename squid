@@ -1,0 +1,3 @@
+add iptables masquerade rule after redireting 80 to 8080. Else URL won't work.
+To redirect Non-standard portsm use iptables nat and preoruting then masquerade it.
+iptables -t nat -A PREROUTING -p tcp --dport 8222 -d 54.76.233.75 -j DNAT --to-destination 54.76.233.75:8222
