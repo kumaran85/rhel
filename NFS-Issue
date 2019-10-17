@@ -1,0 +1,4 @@
+showmount -e given below error. kernel .10.0-957.1.1.el7.x86_64
+clnt_create: RPC: Unknown host
+
+After updating Linux server. it resolved it. 
