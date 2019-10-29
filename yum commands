@@ -1,0 +1,38 @@
+yum list-sec -> To check security updates
+yum check-update 
+yum history info ID
+yum history undo ID
+yum info puppet-server
+yum deplist ansible Shows list of dependencies for ansible
+yumdownloader ansible --destdir=/tmp --resolve (with all deps).
+yum-complete-transaction --cleanup-only
+
+apt-get install linux-virtual  Ubuntu
+apt-get install linux-image-amd64 linux-headers-amd64.
+
+zypper in kernel-default.
+
+apt-get install linux-virtual.
+
+
+wget http://security.debian.org/debian-security/pool/updates/main/c/curl/libcurl3_7.38.0-4+deb8u11_amd64.deb
+wget http://security.debian.org/debian-security/pool/updates/main/c/curl/curl_7.38.0-4+deb8u11_amd64.deb
+
+http://security.debian.org/debian-security/pool/updates/main/o/openssh/
+
+
+ docker run --name some-guacamole-https1 --link some-guacd:guacd -e MYSQL_HOSTNAME=10.64.146.135 -e MYSQL_DATABASE=guacamole_db -e MYSQL_USER=guacamole_user -e MYSQL_PASSWORD=GuacaMole123db -e MYSQL_PORT=3306 -d -p 443:443  dinorg/guacamole
+
+curl -o azureclient.rpm https://rhui-1.microsoft.com/pulp/repos/microsoft-azure-rhel7/rhui-azure-rhel7-2.2-74.noarch.rpm
+rpm -U azureclient.rpm
+
+##########
+To migrate ubuntu 18.04 
+deb http://archive.ubuntu.com/ubuntu bionic main
+deb http://archive.ubuntu.com/ubuntu bionic-security main
+deb http://archive.ubuntu.com/ubuntu bionic-updates main
+#############
+
+zypper search --details  python-base
+zypper -v install -f --download-only 'python-base=2.6.0' -> Then package will be available /var/cache/zypp/packages/
+
