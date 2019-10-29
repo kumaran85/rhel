@@ -1,0 +1,8 @@
+cat /etc/grub2.cfg main grub config file. It loads other files to get kernel and customized details.
+/etc/grub2.cfg loads saved_entry as default kerenl from /boot/grub2/grubenv.
+grubby --default-kernel
+grubby --default-index if it shows 0 latest kernel running if any other number then previous kernel.
+grubby --info=ALL
+grubby --set-default /boot/vmlinuz-3.0.693 -> Persistent change.
+grep initrd /etc/grub2.cfg
+
