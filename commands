@@ -336,3 +336,6 @@ ulimit -a -S  # For soft Limit
 
 #########
 aws sts get-caller-identity -> To check which IAM role attached.
+
+###########
+openssl req -out domain.csr -newkey rsa:2048 -nodes -keyout domain.key -config ssl.conf # To generate SAN certificate
