@@ -339,3 +339,14 @@ aws sts get-caller-identity -> To check which IAM role attached.
 
 ###########
 openssl req -out domain.csr -newkey rsa:2048 -nodes -keyout domain.key -config ssl.conf # To generate SAN certificate
+openssl req -newkey rsa:2048 -nodes -keyout domain.key -out domain.csr
+openssl pkcs12 -export -out serv.pfx -inkey /etc/pki/tls/private/dev.egrc.philips.com-key.pem -in /etc/pki/tls/certs/dev.egrc.philips.com-cert.pem
+
+#####################
+
+SSLProxyVerify none
+SSLProxyCheckPeerCN off
+SSLProxyCheckPeerName off
+SSLProxyCheckPeerExpire off
+################################
+
