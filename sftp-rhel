@@ -1,0 +1,9 @@
+Edit /etc/ssh/sshd_config
+
+Match Group sftpusers
+ChrootDirectory /sftp/%u
+#ForceCommand internal-sftp
+
+chmod 755 /sftp/username/home 
+chown root:root /sftp/username
+chown username:username /sftp/username/home -R 
