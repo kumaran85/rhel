@@ -3,5 +3,8 @@ ECR -> Elastic Container Registry
 CNM ->Container Network Model
 nomad
 consul HasiCorp
+CNCF
 
 strider , drone like Jenkins
+npm  Node Package Manager for node.js
+maven  java
